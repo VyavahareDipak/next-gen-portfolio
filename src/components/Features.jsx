@@ -1,5 +1,6 @@
 import React from 'react'
 import { TiLocationArrow } from 'react-icons/ti'
+import { useRef , useState } from 'react';
 
 const BentoCard = ({ src, title, description, isComingSoon }) => {
   return (
@@ -32,48 +33,86 @@ const BentoCard = ({ src, title, description, isComingSoon }) => {
   )
 }
 
+const BentoTilt = ({children , className=""})=>{
+    const [transformStyle, setTransformStyle] = React.useState("");
+
+    const itemRef = useRef(null);
+
+    const handleMouseMove = (event) =>{
+        if(!itemRef.current) return;
+
+        const {left , top , width , height } = itemRef.current.getBoundingClientRect();
+
+        const relativeX = (event.clientX - left) / width;
+        const relativeY = (event.clientY - top) / height;
+
+        const tiltX = (relativeY - 0.5) * 5 ;
+        const tiltY = (relativeX - 0.5) * -5 ;
+
+        const newTransform = `perspective(700px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(.95 , .95 , .95)` ;
+        setTransformStyle(newTransform);
+
+    } 
+
+    const handleMouseLeave = () => {
+        setTransformStyle("") ;
+    }
+
+    return (
+        <div 
+        ref = {itemRef}
+        className={className}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{transform:transformStyle}}
+        >
+            {children}
+        </div>
+    )
+}
+ 
+
 const Features = () => {
   return (
    <section className='bg-black pb-52'>
         <div className='container mx-auto px-3 md:px-10'>
             <div className=' px-5 py-32'> 
-                 <p className='font-circular-web text-lg text-blue-50'>Into the Metagame Layer</p>
+                 <p className='font-circular-web text-lg text-blue-50'>My Core Strengths</p>
            
                 <p className='max-w-md font-circular-web text-lg opacity-50  text-blue-50'>
-                    immerse yourself in rich and ever-expanding universe where a vibrant array of products converge into an interconnected overlay experience on your world.
+                    Principles and skills I follow while building reliable and scalable applications
                 </p>
                 </div>
-                 <div className='border-hlsa relative mb-7 h-96  w-full overflow-hidden rounded-md md:h-[65vh]'>
+                <BentoTilt className='border-hlsa relative mb-7 h-96  w-full overflow-hidden rounded-md md:h-[65vh]'>
                     <BentoCard
                         src="videos/feature-1.mp4"
-                        title = {<>radi<b>n</b>t</>}
-                        description = "A cross-platform metagame app, turning your activities across web2 and web3 games into rewarding adventure."
+                        title = {<>Cle<b>a</b>n <b>A</b>rchitecture</>}
+                        description = "I write modular, readable, and maintainable code that scales with growing requirements and evolving business needs."
                         isComingSoon={false}
                     />
-        </div>
+                </BentoTilt>
         <div className='grid h-[135vh] grid-cols-2 grid-rows-3 gap-7'>
-
-            <div className='bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2'>
+            <BentoTilt className='bento-tilt_1 row-span-1 md:col-span-1 md:row-span-2'>
                 <BentoCard
                     src="videos/feature-2.mp4"
-                    title={<>zig<b>m</b>a</>}
-                    description="An anime and gaming-inspired NFT collection - the IP primed for expansion.">
+                    title={<>Perfor<b>m</b>ance F<>o</>cused</>}
+                    description="From frontend rendering to backend execution, I focus on performance, efficiency, and smooth user experiences.">
                 </BentoCard>
-            </div>
-            <div className='bento-title-1 row-span-1 ms-32 md:col-span-1 md:ms-0' >
+            </BentoTilt>
+            <BentoTilt className='bento-title-1 row-span-1 ms-32 md:col-span-1 md:ms-0' >
                 <BentoCard
                 src="videos/feature-3.mp4"
-                title={<>n<b>e</b>xus</>}
-                description="A gamified social hub, adding a new dimension of play to social interaction for web3 communities."
+                title={<><b>Q</b>uick L<b>e</b>arner</>}
+                description="I adapt quickly to new tools, frameworks, and technologies, ensuring solutions remain modern and future-ready."
                 />
-            </div>
-            <div className='bento-title-1 me-14 md:col-span-1 md:me-0' >
+            </BentoTilt>
+            <BentoTilt className='bento-title-1 me-14 md:col-span-1 md:me-0' >
                 <BentoCard
                 src="videos/feature-4.mp4"
-                title={<>az<b>u</b>l</>}
-                description="A cross-world AI Agent - elevating your gameplay to be more fun and productive."
+                title={<>Problem S<b>o</b>lv<b>e</b>r</>}
+                description="I enjoy breaking down complex problems into simple, logical solutions that are easy to implement and maintain."
                 />
-            </div>
+            </BentoTilt>
             <div className='bento-tilt_2'>
                 <div className='flex size-full flex-col justify-between bg-violet-300 p-5'>
                     <h1 className='bento-title special-font max-w-64 text-black'>M<b>o</b>re co<b>m</b>ing s<b>o</b>on!</h1>
